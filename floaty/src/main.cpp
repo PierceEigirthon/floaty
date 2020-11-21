@@ -72,22 +72,20 @@ void Reconvert(const char x[], char out[], int N) {
     char bitstore[M] = {'0', '0', '0', '0', '0', '0', '0', '0',
                         '0', '0', '0', '0', '0', '0', '0', '0',
                         '0', '0', '0', '0', '0', '0', '0', '0'};
-    char tmp_whole[M] = {'0', '0', '0', '0', '0', '0', '0', '0',
-                         '0', '0', '0', '0', '0', '0', '0', '0',
-                         '0', '0', '0', '0', '0', '0', '0', '0'};
 
-    int idx = 0;
-    while (natural_part >= 1 && idx < M) {
-        if (natural_part % 2) tmp_whole[idx] = '1';
-        natural_part /= 2;
-        ++idx;
+    int idx = 0; 
+    bool started = false;
+    for(int i = 31; i >= 0; --i){
+        if(started) bitstore[idx++] = (natural_part & (1 << i)) ? '1' : '0'; 
+        else if (!started && (natural_part & (1 << i))) {started = true; bitstore[idx] = '1'; ++idx;} 
     }
 
-    if (!idx) ++idx;  // no natural part? so it's 0
-    // move from temp to bitstore
-    for (int i = idx - 1; i >= 0; --i) {
-        bitstore[(idx - 1) - i] = tmp_whole[i];
-    }
+
+
+
+
+
+
 
     // get the exponent part (8 bits)
     int exp = (idx - 1) + 127;
