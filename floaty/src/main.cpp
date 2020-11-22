@@ -1,15 +1,6 @@
 // IMPLEMENT ADDITIONAL STUFF FROM: https://www.youtube.com/watch?v=wbxSTxhTmrs
 
 
-
-
-int _POWBASE2(const int exp){
-    int res = 1;
-    for(int i = 0; i < exp; ++i) res *= 2; 
-    return res;
-}
-
-
 // must be 32 long, must contain either 1 or 0 chars
 bool ValidateInputConvert(const char x[]) {
     if (x[32] != '\0') return false;
@@ -21,6 +12,10 @@ bool ValidateInputConvert(const char x[]) {
 // TODO: has to contain at least 1 digit, 1 or 0 '.' and optional '-' at the
 // start
 bool ValidateInputReconvert(const char x[]) { return true; }
+
+
+
+
 
 // SIGN * (1 +MANTISSA) * 2 ^ (EXPONENT - 127)
 float Convert(const char x[]) {
@@ -38,14 +33,21 @@ float Convert(const char x[]) {
     const char *end = x + N;
 
     for (; x != exponent_end; ++x, --exp_pow) {
-        if (*x == '1') exponent += _POWBASE2(exp_pow);
+        if (*x == '1') exponent += (1 << exp_pow);
     }
     for (; x != end; ++x, ++mantissa_pow) {
-        if (*x == '1') mantissa += (1.0 / _POWBASE2(mantissa_pow));
-    }
-
-    return sign * (mantissa)*_POWBASE2(exponent);
+        if (*x == '1') mantissa += (1.0 / (1 << mantissa_pow));
+    } 
+    return sign * (mantissa)*(1 << exponent);
 }
+
+
+
+
+
+
+
+
 
 void Reconvert(const char x[], char out[], int N) {
 
@@ -75,14 +77,15 @@ void Reconvert(const char x[], char out[], int N) {
     }
 
 
-
     int idx = 0;
     bool started = false;
     for (int i = 31; i >= 0; --i) {
-        if (started)
+        if (started){
             out[9 + idx++] = (natural_part & (1 << i)) ? '1' : '0';
-        else if (!started && (natural_part & (1 << i)))
+        }
+        else if (!started && (natural_part & (1 << i))){
             started = true;
+        }
     }
 
     // get the exponent part (8 bits)
