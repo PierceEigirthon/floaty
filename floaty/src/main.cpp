@@ -1,10 +1,14 @@
-// IMPLEMENT ADDITIONAL STUFF FROM: https://www.youtube.com/watch?v=wbxSTxhTmrs 
-int POWERBASEX(const int exp, int base, int res = 1) {
-    for (int i = 0; i < exp; ++i) res *= base;
+// IMPLEMENT ADDITIONAL STUFF FROM: https://www.youtube.com/watch?v=wbxSTxhTmrs
+
+
+
+
+int _POWBASE2(const int exp){
+    int res = 1;
+    for(int i = 0; i < exp; ++i) res *= 2; 
     return res;
 }
-int POWBASE2(const int exp) { return POWERBASEX(exp, 2); }
-int POWBASE10(const int exp) { return POWERBASEX(exp, 10); }
+
 
 // must be 32 long, must contain either 1 or 0 chars
 bool ValidateInputConvert(const char x[]) {
@@ -25,7 +29,8 @@ float Convert(const char x[]) {
     int exp_pow = 7;
     int mantissa_pow = 1;
 
-    int sign = (x[0] == '0') ? 1 : -1; ++x; // we got sign skip to next token
+    int sign = (x[0] == '0') ? 1 : -1;
+    ++x;  // we got sign skip to next token
     int exponent = -127;
     float mantissa = 1.0;
 
@@ -33,23 +38,25 @@ float Convert(const char x[]) {
     const char *end = x + N;
 
     for (; x != exponent_end; ++x, --exp_pow) {
-        if (*x == '1') exponent += POWBASE2(exp_pow);
+        if (*x == '1') exponent += _POWBASE2(exp_pow);
     }
     for (; x != end; ++x, ++mantissa_pow) {
-        if (*x == '1') mantissa += (1.0 / POWBASE2(mantissa_pow));
+        if (*x == '1') mantissa += (1.0 / _POWBASE2(mantissa_pow));
     }
 
-    return sign * (mantissa)*POWBASE2(exponent);
+    return sign * (mantissa)*_POWBASE2(exponent);
 }
 
 void Reconvert(const char x[], char out[], int N) {
+
     // get sign
     if (*x == '-') {
         out[0] = '1';
         ++x;
-    } else{
-        out[0] = '0'; 
+    } else {
+        out[0] = '0';
     }
+
     // Convert natural part from chars to an integer
     int natural_part = 0;
     // TODO: figure out what to do for inputs ("10000") with no .
@@ -58,44 +65,51 @@ void Reconvert(const char x[], char out[], int N) {
     }
     ++x;  // move past '.'
 
+
+
     // Convert decimal part from chars to numerator and a denominator
-    int numerator = 0, denominator = 0;
-    for (; *x != '\0'; ++x, ++denominator)
+    int numerator = 0, denominator = 1;
+    for (; *x != '\0'; ++x){
         numerator = numerator * 10 + (*x - '0');
-    denominator = POWBASE10(denominator);
+        denominator = denominator * 10;
+    }
 
 
-    int idx = 0; 
+
+    int idx = 0;
     bool started = false;
-    for(int i = 31; i >= 0; --i){
-        if(started) out[9 + idx++] = (natural_part & (1 << i)) ? '1' : '0'; 
-        else if (!started && (natural_part & (1 << i))) started = true;
-    } 
+    for (int i = 31; i >= 0; --i) {
+        if (started)
+            out[9 + idx++] = (natural_part & (1 << i)) ? '1' : '0';
+        else if (!started && (natural_part & (1 << i)))
+            started = true;
+    }
 
     // get the exponent part (8 bits)
     // TODO: make this with binary stuff and what not
     int exp = idx + 127;
     for (int i = 8; i >= 1; --i, exp /= 2) {
         out[i] = (exp % 2) ? '1' : '0';
-    } 
+    }
     // convert the decimal part
-    // TODO: we can do early cut off here if we want (if like its 0 then it cant get bigger so all esle are 0
-    for (; (9+idx) < 32; ++idx) {
+    // TODO: we can do early cut off here if we want (if like its 0 then it cant
+    // get bigger so all esle are 0
+    for (; (9 + idx) < 32; ++idx) {
         numerator *= 2;
         if (numerator >= denominator) {
             out[9 + idx] = '1';
             numerator -= denominator;
-        }
-        else out[9 + idx] = '0';
-    } 
+        } else
+            out[9 + idx] = '0';
+    }
     // ROUNDING: https://www.youtube.com/watch?v=wbxSTxhTmrs
     if ((numerator * 2) > denominator) {
-        --idx; 
+        --idx;
         while (out[9 + idx] != '0') {
             out[9 + idx] = '0';
             --idx;
         }
         out[9 + idx] = '1';
-    } 
+    }
     out[32] = '\0';
 }
