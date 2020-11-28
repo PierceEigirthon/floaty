@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 // IMPLEMENT ADDITIONAL STUFF FROM: https://www.youtube.com/watch?v=wbxSTxhTmrs
 
 
@@ -17,32 +20,28 @@ bool ValidateInputReconvert(const char x[]) { return true; }
 
 
 
-// SIGN * (1 +MANTISSA) * 2 ^ (EXPONENT - 127)
+// SIGN * (1 + MANTISSA) * 2 ^ (EXPONENT - 127)
 float Convert(const char x[]) {
-    static constexpr int N = 32;
 
-    int exp_pow = 7;
-    int mantissa_pow = 1;
+    const char *exponent_end = x + 9;
+    const char *end = x + 32; 
 
     int sign = (x[0] == '0') ? 1 : -1;
-    ++x;  // we got sign skip to next token
+    ++x;  
+
     int exponent = -127;
-    float mantissa = 1.0;
-
-    const char *exponent_end = x + 8;
-    const char *end = x + N;
-
-    for (; x != exponent_end; ++x, --exp_pow) {
+    for (int exp_pow = 7; x != exponent_end; ++x, --exp_pow) {
         if (*x == '1') exponent += (1 << exp_pow);
-    }
-    for (; x != end; ++x, ++mantissa_pow) {
-        if (*x == '1') mantissa += (1.0 / (1 << mantissa_pow));
     } 
-    return sign * (mantissa)*(1 << exponent);
-}
 
-
-
+    int mant_num = 1;
+    static constexpr int mant_den = 8388608; 
+    for(; x != end; ++x){ 
+        mant_num <<= 1;
+        if(*x == '1') ++mant_num; 
+    } 
+    return sign * static_cast<float>(mant_num) / mant_den *(1 << exponent);
+} 
 
 
 
