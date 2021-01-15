@@ -7,7 +7,7 @@ Floaty is a library for fast convertion and verification for the following:
 * Verifying a floating point number in string format
 ---
 **Code structure and expected behaviour**
-<div>
+<p>
 floaty/
     include/floaty/
         converter32.h - contains headers that are exposed publicly
@@ -23,7 +23,7 @@ floaty/
         case_verifiers.cpp - code which performs verification for generated cases and cases stored in data folder
         case_verifiers.h - declarations and documentation for case_verifiers.h
     Makefile - used to run tests, format code and enable try out convertions in the terminal 
-</div>
+</p>
 
 When in playground mode, user should be able to choose which convertion he/she wants, and then input cases.
 Cases will be first verified, and if verification passes, the user should receive convertions for their inputs.
@@ -45,6 +45,7 @@ Navigate to floaty folder from root directory "cd floaty"
 to change it is to go into the Makefile and specify your desired standard.
 ---
 **Rubic Points Adddressed**
+
 The project demonstrates an understanding of C++ functions and control structures.
 * most of the code is clearly organized into funcitons/classes. For example floaty/tests/case_generatos.cpp/.h
 
