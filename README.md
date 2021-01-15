@@ -7,7 +7,10 @@ Floaty is a library for fast convertion and verification for the following:
 * Verifying a floating point number in string format
 ---
 **Code structure and expected behaviour**
-floaty/
+
+Everything is contained inside floaty folder
+
+
 * include/floaty
 * -------- converter32.h - contains headers that are exposed publicly 
 * libs 
