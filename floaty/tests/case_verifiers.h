@@ -1,15 +1,10 @@
 // case_verifiers.h
 #ifndef CASE_VERIFIERS_H
-#define CASE_VERIFIERS_H
-
+#define CASE_VERIFIERS_H 
 
 #include <fstream>
 #include <sstream>
-//#include <iostream> 
-
-
-
-
+#include <iostream> 
 #include "case_generators.h" 
 #include "floaty/converter32.h"
 
@@ -55,7 +50,7 @@ public:
     virtual bool _compare_with_lib(I x) = 0;
 };
 
-//
+// VerifierInputConvert Verifier class
 class VerifierInputConvert : public VerifierBase<std::string, bool>{ 
 public:
     VerifierInputConvert(bool(*fn)(const char[]));
@@ -65,7 +60,7 @@ protected:
     bool _compare_with_lib(std::string x) override; 
 };
 
-//
+// Convert Verifier class
 class VerifierConvert : public VerifierBase<std::string, float>{ 
 public:
     VerifierConvert(float(*fn)(const char[]));
@@ -78,7 +73,7 @@ private:
     bool _is_equal(const float a, const float b);
 };
 
-//
+// ValidateInputReconvert Verifier class
 class VerifierInputReconvert: public VerifierBase<std::string, bool>{
 public:
     VerifierInputReconvert(bool(*fn)(const char[]));
@@ -89,7 +84,7 @@ protected:
 };
 
 
-//
+// Reconvert Verifier class
 class VerifierReconvert: public VerifierBase<std::string, bool>{
 public:
     VerifierReconvert(bool(*fn)(const char[]));

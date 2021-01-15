@@ -1,12 +1,4 @@
-
-
 #include "case_verifiers.h"
-
-
-//TODO: remove later 
-#include <iostream>
-using std::cout;
-using std::endl;
 
 // ===============================================================
 // DEFINITIONS FOR BASE VERIFIER METHODS
@@ -190,7 +182,7 @@ bool VerifierConvert::_is_equal(const float a, const float b){
 
 // ===============================================================
 // DEFINITIONS FOR INPUT RECONVERT VERIFIER METHODS
-// ===============================================================
+// =============================================================== 
 VerifierInputReconvert::VerifierInputReconvert(bool(*fn)(const char[])){
     this->_cmp = fn;
     this->_gen = new GeneratorReconvert();
@@ -220,28 +212,43 @@ bool VerifierInputReconvert::_compare_with_lib(std::string x){
 // DEFINITIONS FOR RECONVERT VERIFIER METHODS
 // ===============================================================
 
+//TODO: the Reconvert function takes 2 arguments and can't be passed to our funciton pointer
+// will need to do somehing like a union{fn1, fn2} and adjust the code for that, or maybe use
+// variadic templates or something similar
+// For now, this is a complete dummy implementation!  
+VerifierReconvert::VerifierReconvert(bool(*fn)(const char[])){
+    this->_cmp = fn;
+    this->_gen = new GeneratorReconvert();
+}
 
-int main(){
-    /*
+
+void VerifierReconvert::_print_on_verify_start(){ 
+    std::cout << "VERIFYING RECONVERT FUNCTION OUTPUTS!\n"; 
+}
+
+
+bool VerifierReconvert::_compare(std::string x, bool y){
+    return true;
+}
+
+
+bool VerifierReconvert::_compare_with_lib(std::string x){ 
+    return true; 
+}
+
+//TODO: let's leave testing here for now but later we need to change location
+int main(){ 
+    int N = 1000000;
     VerifierInputConvert x(ValidateInputConvert);
-    x.verify("data/validate_input_convert.txt", 32, 6000, true, true); 
+    x.verify("tests/data/validate_input_convert.txt", 32, N, true, true); 
     
     VerifierConvert x2(Convert);
-    x2.verify("data/validate_convert.txt", 32, 64, false, true); 
+    x2.verify("tests/data/validate_convert.txt", 32, N, false, true); 
       
 
     VerifierInputReconvert x3(ValidateInputReconvert);
-    x3.verify("data/validate_input_reconvert.txt", 10, 6000, true, true); 
+    x3.verify("tests/data/validate_input_reconvert.txt", 10, N, true, true); 
 
-    */
-
-    
-
-
-
-
-
-
-
-
+    VerifierReconvert x4(([](const char[]){return true;})); 
+    x4.verify("tests/data/validate_reconvert.txt", 32, N, false, true); 
 } 
