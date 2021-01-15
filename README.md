@@ -9,18 +9,18 @@ Floaty is a library for fast convertion and verification for the following:
 **Code structure and expected behaviour**
 *floaty
     * include/floaty
-        * converter32.h - contains headers that are exposed publicly
-    * libs
-        * . - empty for now, will probably have google benchmark lib
+    * -------- converter32.h - contains headers that are exposed publicly 
+    * libs 
+    * -------- - empty for now, will probably have google benchmark lib
     * src
-        * converter32.cpp - main code for convertion operations
-        * playground.cpp - code which enables user to try out convertions in the terminal
+    * -------- converter32.cpp - main code for convertion operations
+    * -------- playground.cpp - code which enables user to try out convertions in the terminal
     * tests
-        * data - folder for keeping various edge cases for testing
-        * case_generators.cpp - multithreaded generators which generate cases for testing based on various probability distributions
-        * case_generators.h - declarations and documentation for case_generators.cpp
-        * case_verifiers.cpp - code which performs verification for generated cases and cases stored in data folder
-        * case_verifiers.h - declarations and documentation for case_verifiers.h
+    * -------- data - folder for keeping various edge cases for testing
+    * -------- case_generators.cpp - multithreaded generators which generate cases for testing based on various probability distributions
+    * -------- case_generators.h - declarations and documentation for case_generators.cpp
+    * -------- case_verifiers.cpp - code which performs verification for generated cases and cases stored in data folder
+    * -------- case_verifiers.h - declarations and documentation for case_verifiers.h
     * Makefile - used to run tests, format code and enable try out convertions in the terminal 
 
 When in playground mode, user should be able to choose which convertion he/she wants, and then input cases.
