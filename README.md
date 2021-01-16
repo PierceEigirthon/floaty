@@ -39,8 +39,8 @@ The following information included, but not limited to:
 --- 
 **BUILDING**
 Navigate to floaty folder from root directory "cd floaty"
-* to run tests type in "Make test"
-* to run playground type in "Make run" 
+* to run tests type in "make test"
+* to run playground type in "make run" 
 
 **WARNING**: this compiles with c++17 standard, so if it is unavailable to you, the only way 
 to change it is to go into the Makefile and specify your desired standard.
